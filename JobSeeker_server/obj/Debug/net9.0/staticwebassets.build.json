@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "OZu7iBXG34Qok+t/9BEAu+zrTAEUab2DO8XoKMskaoo=",
+  "Source": "JobSeeker_server",
+  "BasePath": "_content/JobSeeker_server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

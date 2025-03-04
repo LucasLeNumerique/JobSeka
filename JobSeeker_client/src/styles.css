@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 2.5;
+}
+h2 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    line-height: 2;
+}
+h3 {
+    font-size: 1.5rem;
+    font-weight: 500
+}
