@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router"
+import { formatSalary, formatDate } from "../utils/formatters"
 
 const Jobs = ({ setSelectedJob }) => {
     const [jobs, setJobs] = useState([])
@@ -18,23 +20,16 @@ const Jobs = ({ setSelectedJob }) => {
     }, [])
 
     if (loading) {
-        return <p className="absolute top-1/2 -translate-y-1/2 text-center italic text-2xl font-medium">Les opportunités sont en train de charger...</p>
+        return (
+            <div className="relative w-full h-full">
+                <p className="absolute top-1/2 -translate-y-1/2 text-center italic text-2xl font-medium">Les opportunités sont en train de charger...</p>
+            </div>
+        )
     }
 
     const handleJobClick = (job) => {
         setSelectedJob(job)
     }
-
-    const formatSalary = (salary) => {
-        return salary?.toLocaleString("fr-FR");
-    };
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("fr-FR", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-        });
-    };
 
     return (
         <div className="lg:overflow-y-auto flex flex-col gap-y-4">
@@ -42,16 +37,27 @@ const Jobs = ({ setSelectedJob }) => {
                 <p className="absolute top-1/2 -translate-y-1/2 text-center italic">Il n'y a actuellement pas d'offre à découvrir.</p>
             ) : (
                 jobs.map(job => (
-                <article 
-                    key={job.id} 
-                    onClick={() => handleJobClick(job)}
-                    className="cursor-pointer p-2 lg:p-4 flex flex-col gap-2 border-2 border-gray-600 hover:border-cyan-400 rounded-lg"
-                >
-                    <h3>{job.title}</h3>
-                    <p className="italic font-bold">{job.company}</p>
-                    {job.salary ? <p className="text-base">Salaire annuel : {formatSalary(job.salary)} €</p> : <p>Salaire non défini</p>}
-                    <p>{formatDate(job.postedDate)}</p>
-                </article>
+                    <article 
+                        key={job.id} 
+                        onClick={() => handleJobClick(job)}
+                        className="relative cursor-pointer p-2 lg:p-4 flex flex-col gap-2 border-2 border-gray-600 hover:border-cyan-400 rounded-lg"
+                    >
+                        <Link 
+                            to={`/jobs/${job.id}`}
+                            className="absolute top-5 right-5"
+                        >
+                            <div className="px-2 h-8 flex justify-center items-center gap-x-1 text-white bg-cyan-600 hover:bg-cyan-400 rounded-full">
+                                <p className="font-bold">Détails</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
+                                    <path d="M21.721 12.752a9.711 9.711 0 0 0-.945-5.003 12.754 12.754 0 0 1-4.339 2.708 18.991 18.991 0 0 1-.214 4.772 17.165 17.165 0 0 0 5.498-2.477ZM14.634 15.55a17.324 17.324 0 0 0 .332-4.647c-.952.227-1.945.347-2.966.347-1.021 0-2.014-.12-2.966-.347a17.515 17.515 0 0 0 .332 4.647 17.385 17.385 0 0 0 5.268 0ZM9.772 17.119a18.963 18.963 0 0 0 4.456 0A17.182 17.182 0 0 1 12 21.724a17.18 17.18 0 0 1-2.228-4.605ZM7.777 15.23a18.87 18.87 0 0 1-.214-4.774 12.753 12.753 0 0 1-4.34-2.708 9.711 9.711 0 0 0-.944 5.004 17.165 17.165 0 0 0 5.498 2.477ZM21.356 14.752a9.765 9.765 0 0 1-7.478 6.817 18.64 18.64 0 0 0 1.988-4.718 18.627 18.627 0 0 0 5.49-2.098ZM2.644 14.752c1.682.971 3.53 1.688 5.49 2.099a18.64 18.64 0 0 0 1.988 4.718 9.765 9.765 0 0 1-7.478-6.816ZM13.878 2.43a9.755 9.755 0 0 1 6.116 3.986 11.267 11.267 0 0 1-3.746 2.504 18.63 18.63 0 0 0-2.37-6.49ZM12 2.276a17.152 17.152 0 0 1 2.805 7.121c-.897.23-1.837.353-2.805.353-.968 0-1.908-.122-2.805-.353A17.151 17.151 0 0 1 12 2.276ZM10.122 2.43a18.629 18.629 0 0 0-2.37 6.49 11.266 11.266 0 0 1-3.746-2.504 9.754 9.754 0 0 1 6.116-3.985Z" />
+                                </svg>
+                            </div>
+                        </Link>
+                        <h3>{job.title}</h3>
+                        <p className="italic font-bold">{job.company}</p>
+                        {job.salary ? <p className="text-base">Salaire annuel : {formatSalary(job.salary)} €</p> : <p>Salaire non défini</p>}
+                        <p>Publiée le {formatDate(job.postedDate)}</p>
+                    </article>
                 ))
             )}
         </div>

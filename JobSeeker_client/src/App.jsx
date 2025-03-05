@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router"
 import HomeLayout from "./layouts/MainLayout"
 import HomeView from "./views/HomeView"
+import JobView from "./views/JobView"
 
 const App = () => {
   return (
@@ -9,6 +10,7 @@ const App = () => {
         <Routes>
           <Route element={<HomeLayout />}>
             <Route index element={<HomeView />} />
+            <Route path="jobs/:id" element={<JobView />} />
           </Route>
         </Routes>
       </BrowserRouter>

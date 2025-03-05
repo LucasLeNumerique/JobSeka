@@ -1,3 +1,6 @@
+import { Link } from "react-router"
+import { formatSalary, formatDate } from "../utils/formatters"
+
 const SelectedJob = ({ selectedJob }) => {
     if (!selectedJob) {
         return (
@@ -8,24 +11,14 @@ const SelectedJob = ({ selectedJob }) => {
         )
     }
 
-    const formatSalary = (salary) => {
-        return salary?.toLocaleString("fr-FR");
-    };
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("fr-FR", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-        });
-    };
-
     return (
-        <div>
+        <div className="flex flex-col gap-y-2">
             <h2 className="text-2xl font-bold">{selectedJob.title}</h2>
             <p className="italic">{selectedJob.company}</p>
             <p>{selectedJob.salary ? `${formatSalary(selectedJob.salary)} €` : "Salaire non défini"}</p>
-            <p className="mt-4">{selectedJob.description || "Pas de description disponible"}</p>
-            <p>{formatDate(selectedJob.postedDate)}</p> {/* Format the postedDate */}
+            <p className="">{selectedJob.description || "Pas de description disponible"}</p>
+            <p>{formatDate(selectedJob.postedDate)}</p>
+            <Link className="block w-fit py-3 px-4 font-bold text-white bg-cyan-600 hover:bg-cyan-400 rounded-lg" to={`/jobs/${selectedJob.id}`}>En savoir plus</Link>
         </div>
     )
 }

@@ -156,3 +156,4 @@ D:\digital projects\_Projects\JobSeeker\JobSeeker_server\obj\Debug\net9.0\ref\Jo
 D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\digital projects\_Projects\JobSeeker\JobSeeker_server\obj\Debug\net9.0\JobSeeker_server.sourcelink.json
