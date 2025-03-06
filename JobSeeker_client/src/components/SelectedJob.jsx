@@ -18,7 +18,7 @@ const SelectedJob = ({ selectedJob }) => {
             <p>{selectedJob.salary ? `${formatSalary(selectedJob.salary)} €` : "Salaire non défini"}</p>
             <p className="">{selectedJob.description || "Pas de description disponible"}</p>
             <p>{formatDate(selectedJob.postedDate)}</p>
-            <Link className="block w-fit py-3 px-4 font-bold text-white bg-cyan-600 hover:bg-cyan-400 rounded-lg" to={`/jobs/${selectedJob.id}`}>En savoir plus</Link>
+            <Link className="block w-fit py-3 px-4 font-bold text-white bg-cyan-600 hover:bg-cyan-400 rounded-lg shadow-md shadow-cyan-900/100 hover:shadow-cyan-400/100" to={`/jobs/${selectedJob.id}`}>En savoir plus</Link>
         </div>
     )
 }

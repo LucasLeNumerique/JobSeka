@@ -4,7 +4,7 @@ import Footer from "../components/Footer"
 
 const HomeLayout = () => {
     return (
-        <div className="lg:h-screen lg:flex flex-col justify-between">
+        <div className="h-screen lg:flex flex-col justify-between">
             <Header />
             <div className="h-3/4 mx-auto w-full max-w-[1250px] px-2 md:px-5">
                 <Outlet />
