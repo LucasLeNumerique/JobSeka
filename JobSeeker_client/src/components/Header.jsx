@@ -7,15 +7,15 @@ const Header = () => {
 
     return (
         <header>
-            <nav className="h-fit md:h-15 py-2 gap-y-2 md:py-0 px-2 md:px-5 flex flex-col items-center md:flex-row md:justify-between md:items-center">
-                <NavLink to="/" className="text-2xl font-bold text-blue-500">
+            <nav className="h-fit lg:h-15 py-2 gap-y-2 md:py-0 px-2 md:px-5 flex flex-col items-center lg:grid grid-cols-12 md:justify-between md:items-center">
+                <NavLink to="/" className="block py-3 lg:py-0 col-span-2 text-2xl font-bold text-blue-500">
                     Job<span className="text-cyan-400">Seka</span> 
                 </NavLink>
-                <div className="font-medium">
+                <div className="col-start-5 col-end-9 font-medium">
                     {user?.role === "Candidate" && 
                         <Link 
                             to="/publier"
-                            className="py-2 px-4 text-center text-cyan-400 bg-linear-to-r from-white to-cyan-50 border border-cyan-400 rounded-xl"
+                            className="block mx-auto w-[200px] lg:w-fit py-2 px-4 text-center text-cyan-400 bg-linear-to-r from-white to-cyan-50 border border-cyan-400 rounded-xl"
                         >
                             Chercher des offres
                     </Link>
@@ -23,23 +23,23 @@ const Header = () => {
                     {user?.role === "Recruiter" && 
                         <Link 
                             to="/publier"
-                            className="py-2 px-4 text-center text-blue-400 bg-linear-to-r from-white to-blue-50 border border-x-blue-400 rounded-xl"
+                            className="block mx-auto w-[200px] lg:w-fit py-2 px-4 text-center text-blue-400 bg-linear-to-r from-white to-blue-50 border border-x-blue-400 rounded-xl"
                         >
                             Publier une offre
                         </Link>
                     } 
                 </div>
-                <div className="flex flex-col md:flex-row gap-4 font-medium">
+                <div className="col-start-9 col-end-13 flex flex-col lg:flex-row justify-end gap-y-2 gap-x-4 font-medium">
                     {token ? (
                         <>
                             <Link 
-                                to="/connexion" 
-                                className="py-2 px-4 text-center text-blue-400 bg-linear-to-r from-white to-blue-50 border border-x-blue-400 rounded-xl">
+                                to="/" 
+                                className="w-[200px] lg:w-fit py-2 px-4 text-center text-blue-400 bg-linear-to-r from-white to-blue-50 border border-x-blue-400 rounded-xl">
                                 Mon compte
                             </Link>
                             <button 
                                 onClick={logout}
-                                className="cursor-pointer py-2 px-4 text-center text-blue-400 bg-linear-to-r from-white to-blue-50 border border-x-blue-400 rounded-xl"
+                                className="w-[200px] lg:w-fit cursor-pointer py-2 px-4 text-center text-blue-400 bg-linear-to-r from-white to-blue-50 border border-x-blue-400 rounded-xl"
                             >
                                 Se déconnecter
                             </button>
