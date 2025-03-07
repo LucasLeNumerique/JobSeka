@@ -10,7 +10,7 @@ const HomeView = () => {
             <h1 className="row-span-2 text-center">Cherchez une <span className="text-blue-400">offre d'emploi</span></h1>
             <main className="row-span-8 block lg:grid grid-cols-2 gap-x-10">
                 <Jobs setSelectedJob={setSelectedJob} />
-                <div className="hidden lg:block">
+                <div className="hidden lg:block lg:p-4 rounded-xl">
                     <SelectedJob selectedJob={selectedJob} />
                 </div>
             </main>
