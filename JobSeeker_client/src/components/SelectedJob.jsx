@@ -24,11 +24,13 @@ const SelectedJob = ({ selectedJob }) => {
             <hr className="my-2 border-t border-gray-900" />
 
             <div className="flex flex-col md:flex-row gap-2">
-                <Link className="block w-fit p-2 md:p-3 font-bold text-white bg-blue-500 hover:bg-cyan-400 rounded-lg shadow-md shadow-blue-900/100 hover:shadow-cyan-400/100" to={`/jobs/${selectedJob.id}`}>En savoir plus</Link>
+                <Link className="block w-fit p-2 md:p-3 font-bold text-white bg-blue-500 hover:bg-cyan-400 rounded-lg shadow-md shadow-blue-900 hover:shadow-cyan-600" to={`/jobs/${selectedJob.id}`}>
+                    En savoir plus
+                </Link>
                 <button 
                     className={`block w-fit p-2 md:p-3 font-bold text-white rounded-lg shadow-md 
                         ${user && user.role === "Candidate" 
-                            ? "cursor-pointer bg-blue-500 hover:bg-cyan-400 shadow-blue-600/100 hover:shadow-cyan-400/100" 
+                            ? "cursor-pointer bg-blue-500 hover:bg-cyan-400 shadow-blue-900 hover:shadow-cyan-600" 
                             : "bg-gray-400 shadow-md shadow-gray-700/100 cursor-not-allowed line-through"}`}
                     disabled={!user || user.role === "Recruiter"}
                 >

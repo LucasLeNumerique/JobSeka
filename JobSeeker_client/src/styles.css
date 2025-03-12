@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+    font-family: Inter, sans-serif;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -27,4 +31,28 @@ h3 {
     h3 {
         font-size: 1.5rem;
     }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    cursor: pointer;
+    background: #f0f0f0;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background: #a0a0a0;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #797979;
 }

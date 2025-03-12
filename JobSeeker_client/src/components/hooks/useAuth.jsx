@@ -4,32 +4,42 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem("token"));
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        const savedToken = localStorage.getItem("token")
 
-    useEffect(() => {
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split(".")[1]));
+        if (!savedToken) return null;
 
-                const email = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-                const role = payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-
-                setUser({ email, role });
-            } catch (error) {
-                console.error("Error decoding token:", error);
-            }
+        try {
+            const payload = JSON.parse(atob(savedToken.split(".")[1]));
+            return {
+                email: payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+                role: payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+            };
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return null;
         }
-    }, [token]);
+    });
 
     const login = (newToken) => {
-        setToken(newToken);
         localStorage.setItem("token", newToken);
+        setToken(newToken);
+        try {
+            const payload = JSON.parse(atob(newToken.split(".")[1]));
+            setUser({
+                email: payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+                role: payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+            });
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            setUser(null);
+        }
     };
 
     const logout = () => {
+        localStorage.removeItem("token");
         setToken(null);
         setUser(null);
-        localStorage.removeItem("token");
     };
 
     return (

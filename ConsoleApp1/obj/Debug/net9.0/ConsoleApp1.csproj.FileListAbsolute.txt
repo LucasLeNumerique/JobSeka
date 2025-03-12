@@ -12,3 +12,4 @@ D:\digital projects\_Projects\JobSeeker\ConsoleApp1\obj\Debug\net9.0\refint\Cons
 D:\digital projects\_Projects\JobSeeker\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.pdb
 D:\digital projects\_Projects\JobSeeker\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.genruntimeconfig.cache
 D:\digital projects\_Projects\JobSeeker\ConsoleApp1\obj\Debug\net9.0\ref\ConsoleApp1.dll
+D:\digital projects\_Projects\JobSeeker\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.sourcelink.json
