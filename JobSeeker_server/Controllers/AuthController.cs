@@ -107,7 +107,6 @@ namespace JobSeeker_server.Controllers
             });
         }
 
-        // Verify the password by comparing the hash and salt
         private bool VerifyPasswordHash(string password, string storedHash)
         {
             byte[] salt = Convert.FromBase64String(storedHash.Substring(0, 32));
@@ -130,15 +129,12 @@ namespace JobSeeker_server.Controllers
         }
     }
 
-    // Register Model for User Registration
     public class RegisterModel
     {
         public required string Email { get; set; }
         public required string Password { get; set; }
-        public string Role { get; set; } = "Candidate"; // Default to "Candidate"
+        public string Role { get; set; } = "Candidate";
     }
-
-    // Login Model for User Login
     public class LoginModel
     {
         public required string Email { get; set; }

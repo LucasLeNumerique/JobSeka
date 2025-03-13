@@ -21,9 +21,9 @@ text-gray-600
 
 _____________________________________________________________________________________________________________________________________
 
-• DELETE user route [done] : besoin de désafficher avant de rafraîchir la page
 • Protected pages [done] : penser à encapsuler les routes avec <ProtectedRoute> lorsqu'il y a un privilège
+• CREATE job route [done] : créer la page front CreateJobView (recruiter side)
+• DELETE user route [done/warning] : besoin de désafficher avant de rafraîchir la page
 
-• CREATE job route [to do] : créer la page front CreateJobView (recruiter side)
 • Page AccountView [to do] : créer la page front Mon Compte (exclu admin side)
 

@@ -39,6 +39,22 @@ namespace JobSeeker_server.Controllers
 
             return job;
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Job>> CreateJob(Job job)
+        {
+            if (!ModelState.IsValid)
+            {
+                BadRequest(ModelState);
+            }
+
+            job.PostedDate = DateTime.UtcNow;
+
+            _context.Jobs.Add(job);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetJob), new { id = job.Id }, job);
+        }
     } 
 }
 
