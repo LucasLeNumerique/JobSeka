@@ -158,3 +158,9 @@ D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\Swashb
 D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\digital projects\_Projects\JobSeeker\JobSeeker_server\obj\Debug\net9.0\JobSeeker_server.sourcelink.json
 D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\publish\web.config
+D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\publish\appsettings.Development.json
+D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\publish\appsettings.json
+D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\publish\JobSeeker_server.deps.json
+D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\publish\JobSeeker_server.runtimeconfig.json
+D:\digital projects\_Projects\JobSeeker\JobSeeker_server\bin\Debug\net9.0\publish\JobSeeker_server.staticwebassets.endpoints.json

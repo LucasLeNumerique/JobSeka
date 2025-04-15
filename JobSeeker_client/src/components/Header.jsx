@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router";
-import { useAuth } from "./hooks/useAuth";
+import { useAuth } from "./Auth/useAuth";
 import { useEffect, useRef, useState } from "react";
 
 
@@ -89,7 +89,7 @@ const Header = () => {
                         {token ? (
                             <>
                                 <Link 
-                                    to="/" 
+                                    to="/mon-compte" 
                                     onClick={handleNavClick}
                                     className="w-[200px] lg:w-fit py-2 px-4 text-center text-blue-400 bg-linear-to-r from-white to-blue-50 border border-x-blue-400 rounded-xl">
                                     Mon compte

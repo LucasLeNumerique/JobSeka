@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router"
-import { useAuth } from "../../components/hooks/useAuth"
+import { useAuth } from "../../components/Auth/useAuth"
 
 const LoginView = () => {
     const [formData, setFormData] = useState({ email: "", password: "" })
@@ -28,11 +28,12 @@ const LoginView = () => {
                 body: JSON.stringify(formData),
             });
 
+            const responseBody = await response.json();
+
             if (!response.ok) {
-                setMessage("L'email ou le mot de passe est invalide.")
+                setMessage(responseBody.message || "L'email ou le mot de passe est invalide.");
             } else {
-                const data = await response.json()
-                login(data.token)
+                login(responseBody.token)
                 setMessage("Connexion réussie !")
                 setTimeout(() => {
                     navigate("/");
@@ -40,7 +41,8 @@ const LoginView = () => {
             }
 
         } catch (err) {
-            setError(err.message);
+            console.error("Erreur durant la tentative de connexion :", err);
+        setError(err.message);
         } finally {
             setLoading(false);
         }
@@ -77,7 +79,7 @@ const LoginView = () => {
                 </div>
                 {error && <p className="text-red-500">{error}</p>}
                 <button 
-                    className="cursor-pointer py-3 font-bold text-white bg-blue-500 hover:bg-cyan-400 shadow-md shadow-blue-900 hover:shadow-cyan-600 rounded-lg" 
+                    className="cursor-pointer py-3 font-bold text-white bg-blue-500 transition hover:bg-cyan-400 shadow-md shadow-blue-900 hover:shadow-cyan-600 rounded-lg" 
                     type="submit"
                     disabled={loading}
                 >

@@ -1,20 +1,26 @@
-import { useState } from "react"
-import { useAuth } from "../../components/hooks/useAuth";
+import { useEffect, useState } from "react"
+import { useAuth } from "../../components/Auth/useAuth";
 import { useNavigate } from "react-router";
 
 const CreateJobView = () => {
-    const { token } = useAuth()
+    const { user, token } = useAuth()
     const navigate = useNavigate()
     
     const [formData, setFormData] = useState({
         title: "",
         description: "",
-        company: "",
         location: "",
         salary: "",
     })
     const [message, setMessage] = useState("")
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (!user || user.role !== "Recruiter") {
+            navigate("/");
+            return;
+        }
+    }, [user, navigate])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -25,6 +31,14 @@ const CreateJobView = () => {
         e.preventDefault()
         setLoading(true)
 
+        const payload = {
+            title: formData.title,
+            description: formData.description,
+            location: formData.location,
+            salary: formData.salary ? parseFloat(formData.salary) : null,
+            recruiterId: parseInt(user.userId),
+        };
+
         try {
             const response = await fetch("https://localhost:7103/api/jobs", {
                 method: "POST",
@@ -32,10 +46,7 @@ const CreateJobView = () => {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify({
-                    ...formData,
-                    salary: parseFloat(formData.salary) || null,
-                }),
+                body: JSON.stringify(payload),
             });
 
             if (response.ok) {
@@ -43,10 +54,13 @@ const CreateJobView = () => {
                 setTimeout(() => {
                     navigate("/");
                 }, 2000);
+            } else {
+                const errorData = await response.json()
+                setMessage(errorData.message || "Erreur lors de la soumission")
             }
         } catch (error) {
             console.error("Erreur : ", error)
-            setMessage("Une erreur s'est produite lors de la soumission.")
+            setMessage("Une erreur réseau s'est produite")
         } finally {
             setLoading(false)
         }
@@ -64,7 +78,7 @@ const CreateJobView = () => {
                         <label className="text-xl font-medium">Titre du poste</label>
                         <input
                             type="text"
-                            placeholder="Titre du poste"
+                            placeholder="Exemple : développeur web"
                             name="title"
                             value={formData.title}
                             onChange={handleChange}
@@ -78,10 +92,9 @@ const CreateJobView = () => {
                             type="text"
                             placeholder="Nom de la société"
                             name="company"
-                            value={formData.company}
-                            onChange={handleChange}
-                            required
-                            className="w-full py-2 px-4 mx-auto w-full border border-blue-300 focus:outline-none rounded-xl"
+                            value={user.companyName || `Votre email : ${user.email}`}
+                            readOnly
+                            className="cursor-not-allowed w-full py-2 px-4 mx-auto bg-gray-100 w-full border border-blue-300 focus:outline-none rounded-xl"
                         />
                     </div>
                 </div>
@@ -91,7 +104,7 @@ const CreateJobView = () => {
                         <label className="text-xl font-medium">Localisation</label>
                         <input
                             type="text"
-                            placeholder="Titre du poste"
+                            placeholder="Exemple : Paris"
                             name="location"
                             value={formData.location}
                             onChange={handleChange}
@@ -108,14 +121,13 @@ const CreateJobView = () => {
                             name="salary"
                             value={formData.salary}
                             onChange={handleChange}
-                            required
                             className="w-full py-2 px-4 mx-auto w-full border border-blue-300 focus:outline-none rounded-xl"
                         />
                     </div>
                 </div>
 
                 <div className="longRow">
-                    <div className="field col-span-8 flex flex-col gap-2">
+                    <div className="field flex flex-col gap-2">
                         <label className="text-xl font-medium">Description du poste</label>
                         <textarea
                             placeholder="Entreprise, activités, missions, profil idéal..."
@@ -130,7 +142,7 @@ const CreateJobView = () => {
 
                 <div className="longRow">
                     <button 
-                        className="cursor-pointer block w-full max-w-[350px] sm:max-w-none sm:w-fit mx-auto py-3 px-8 font-bold text-white bg-blue-500 hover:bg-cyan-400 shadow-md shadow-blue-900 hover:shadow-cyan-600 rounded-lg" 
+                        className="cursor-pointer block w-full max-w-[350px] sm:max-w-none sm:w-fit mx-auto py-3 px-8 font-bold text-white transition bg-blue-500 hover:bg-cyan-400 shadow-md shadow-blue-900 hover:shadow-cyan-600 rounded-lg" 
                         type="submit"
                     >
                         {loading ? "Publication en cours..." : "Poster cette offre"}

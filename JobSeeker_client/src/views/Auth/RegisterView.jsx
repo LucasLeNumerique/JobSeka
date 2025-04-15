@@ -8,7 +8,8 @@ const RegisterView = () => {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
-        role
+        role,
+        companyName: ""
     })
     const [message, setMessage] = useState("")
 
@@ -69,7 +70,20 @@ const RegisterView = () => {
                         className="py-2 px-4 mx-auto w-full text-center border border-blue-300 focus:outline-none rounded-xl"
                     />
                 </div>
-                <button className="cursor-pointer py-3 font-bold text-white bg-blue-500 hover:bg-cyan-400 shadow-md shadow-blue-900 hover:shadow-cyan-600 rounded-lg" type="submit">Créer mon compte</button>
+                {role === "Recruiter" && (
+                    <div className="flex flex-col gap-2">
+                    <label className="text-xl font-medium">Société</label>
+                    <input
+                        type="text"
+                        name="companyName"
+                        value={formData.companyName}
+                        onChange={handleChange}
+                        required
+                        className="py-2 px-4 mx-auto w-full text-center border border-blue-300 focus:outline-none rounded-xl"
+                    />
+                </div>
+                )}
+                <button className="cursor-pointer py-3 font-bold text-white bg-blue-500 transition hover:bg-cyan-400 shadow-md shadow-blue-900 hover:shadow-cyan-600 rounded-lg" type="submit">Créer mon compte</button>
             </form>
         </div>
     )
