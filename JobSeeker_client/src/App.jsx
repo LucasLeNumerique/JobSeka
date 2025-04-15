@@ -5,8 +5,10 @@ import HomeView from "./views/HomeView"
 import JobView from "./views/JobView"
 import RegisterView from "./views/Auth/RegisterView"
 import LoginView from "./views/Auth/LoginView"
+import AccountView from "./views/AccountView"
 import AdminView from "./views/Admin/AdminView"
-import CreatePostView from "./views/Recruiter/CreatePostView"
+import ApplicationView from "./views/Candidate/ApplicationView"
+import CreateJobView from "./views/Recruiter/CreateJobView"
 
 import ProtectedRoute from "./components/ProtectedRoute"
 
@@ -20,8 +22,10 @@ const App = () => {
             <Route path="jobs/:id" element={<JobView />} />
             <Route path="creation-de-compte" element={<RegisterView />} />
             <Route path="connexion" element={<LoginView />} />
+            <Route path="mon-compte" element={<ProtectedRoute><AccountView /></ProtectedRoute>} />
             <Route path="admin" element={<ProtectedRoute><AdminView /></ProtectedRoute>} />
-            <Route path="publier-une-offre" element={<ProtectedRoute><CreatePostView /></ProtectedRoute>} />
+            <Route path="publier-une-offre" element={<ProtectedRoute><CreateJobView /></ProtectedRoute>} />
+            <Route path="candidature/:id" element={<ProtectedRoute><ApplicationView /></ProtectedRoute>} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,13 +1,13 @@
 using JobSeeker_server.Data;
 using JobSeeker_server.Models;
+using JobSeeker_server.Models.Dtos;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace JobSeeker_server.Controllers
 {
@@ -15,32 +15,25 @@ namespace JobSeeker_server.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserContext context, IConfiguration configuration)
+        public AuthController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
 
-        // Register a new user
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterModel model)
+        public IActionResult Register([FromBody] RegisterDto model)
         {
-            // Check if the user already exists
             var existingUser = _context.Users.SingleOrDefault(u => u.Email == model.Email);
             if (existingUser != null)
-            {
                 return BadRequest("User already exists");
-            }
 
-            // Hash the password
-            byte[] salt = new byte[24]; // Ensure 24-byte salt
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(salt); // Generate 24-byte random salt
-            }
+            // Hashing the password
+            byte[] salt = new byte[24];
+            RandomNumberGenerator.Fill(salt);
 
             byte[] hashedPassword = KeyDerivation.Pbkdf2(
                 password: model.Password,
@@ -50,15 +43,26 @@ namespace JobSeeker_server.Controllers
                 numBytesRequested: 64
             );
 
-            // Combine the salt and the hashed password and store them
             string passwordHash = Convert.ToBase64String(salt) + Convert.ToBase64String(hashedPassword);
 
-            // Create a new user object and save it to the database
+            Company? company = null;
+            if (model.Role == "Recruiter" && !string.IsNullOrWhiteSpace(model.CompanyName))
+            {
+                company = _context.Companies.FirstOrDefault(c => c.Name == model.CompanyName);
+                if (company == null)
+                {
+                    company = new Company { Name = model.CompanyName };
+                    _context.Companies.Add(company);
+                    _context.SaveChanges(); // Get the company Id
+                }
+            }
+
             var newUser = new User
             {
                 Email = model.Email,
                 PasswordHash = passwordHash,
-                Role = model.Role // Role can be "Candidate" or any other role
+                Role = model.Role,
+                CompanyId = company?.Id
             };
 
             _context.Users.Add(newUser);
@@ -67,30 +71,38 @@ namespace JobSeeker_server.Controllers
             return Ok("User registered successfully");
         }
 
-        // Login endpoint
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel model)
+        public IActionResult Login([FromBody] LoginDto model)
         {
             var user = _context.Users.SingleOrDefault(u => u.Email == model.Email);
-            if (user == null)
+            if (user == null || !VerifyPasswordHash(model.Password, user.PasswordHash))
             {
-                return Unauthorized("Invalid credentials");
+                return Unauthorized(new { message = "L'email ou le mot de passe est invalide." });
             }
 
-            // Verify password
-            if (!VerifyPasswordHash(model.Password, user.PasswordHash))
+            // JWT claims
+            var claims = new List<Claim>
             {
-                return Unauthorized("Invalid credentials");
-            }
-
-            // Generate JWT token
-            var claims = new[]
-            {
+                new Claim("userId", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Email),
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            if (user.Role == "Recruiter" && user.CompanyId.HasValue)
+            {
+                var company = _context.Companies.FirstOrDefault(c => c.Id == user.CompanyId);
+                if (company != null)
+                {
+                    claims.Add(new Claim("companyId", company.Id.ToString()));
+                    claims.Add(new Claim("companyName", company.Name));
+                }
+            }
+
+            var jwtKey = _configuration["Jwt:Key"];
+            if (string.IsNullOrWhiteSpace(jwtKey))
+                throw new InvalidOperationException("JWT Key is not configured.");
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
@@ -107,14 +119,10 @@ namespace JobSeeker_server.Controllers
             });
         }
 
-        // Verify the password by comparing the hash and salt
         private bool VerifyPasswordHash(string password, string storedHash)
         {
             byte[] salt = Convert.FromBase64String(storedHash.Substring(0, 32));
             byte[] hash = Convert.FromBase64String(storedHash.Substring(32));
-
-            Console.WriteLine($"Salt length: {salt.Length} bytes (Base64: {Convert.ToBase64String(salt).Length} chars)");
-            Console.WriteLine($"Hash length: {hash.Length} bytes (Base64: {Convert.ToBase64String(hash).Length} chars)");
 
             byte[] computedHash = KeyDerivation.Pbkdf2(
                 password,
@@ -124,24 +132,7 @@ namespace JobSeeker_server.Controllers
                 64
             );
 
-            Console.WriteLine($"Computed Hash (Base64): {Convert.ToBase64String(computedHash)}");
-
             return computedHash.SequenceEqual(hash);
         }
-    }
-
-    // Register Model for User Registration
-    public class RegisterModel
-    {
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-        public string Role { get; set; } = "Candidate"; // Default to "Candidate"
-    }
-
-    // Login Model for User Login
-    public class LoginModel
-    {
-        public required string Email { get; set; }
-        public required string Password { get; set; }
     }
 }

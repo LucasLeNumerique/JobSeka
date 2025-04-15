@@ -1,30 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using JobSeeker_server.Data;
 using JobSeeker_server.Models;
+using JobSeeker_server.Data;
 
 namespace JobSeeker_server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class UsersController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly ApplicationDbContext _context; // Use ApplicationDbContext
 
-        public UsersController(UserContext context)
+        public UsersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Job>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _context.Users
                 .Select(u => new { u.Id, u.Email, u.Role })
                 .ToListAsync();
 
-                return Ok(users);
+            return Ok(users);
         }
 
         [HttpDelete("{id}")]

@@ -22,7 +22,10 @@ const UserList = () => {
     
         try {
             const response = await fetch(`https://localhost:7103/api/users/${userId}`, { method: "DELETE" })
-            if (response.ok) alert("Utilisateur supprimé avec succès") 
+            if (response.ok) {
+                alert("Utilisateur supprimé avec succès")
+                setUsers(prevUsers => prevUsers.filter(user => user.id !== userId))  
+            }  
         } catch (error) {
             console.error("Erreur : ", error)
         }
@@ -48,11 +51,11 @@ const UserList = () => {
                         candidates.map(user => (
                             <article 
                                 key={user.id}
-                                className="relative cursor-pointer p-2 lg:px-4 flex justify-between items-center gap-2 border border-gray-600 hover:border-cyan-400 shadow-xl hover:shadow-cyan-600/50 rounded-xl"
+                                className="relative cursor-pointer p-2 lg:px-4 flex justify-between items-center gap-2 border border-gray-600 transition hover:border-cyan-400 shadow-xl hover:shadow-cyan-600/50 rounded-xl"
                             >
                                 <p className="text-sm sm:text-base">{user.email}</p>
                                 <button onClick={() => deleteUser(user.id)}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="cursor-pointer text-red-400 size-8 hover:text-red-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="cursor-pointer text-red-400 size-8 transition hover:text-red-600">
                                         <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clipRule="evenodd" />
                                     </svg>
                                 </button>
