@@ -25,15 +25,14 @@ ________________________________________________________________________________
 • CREATE LoginView [done]
 • CREATE CreateJob [done] 
 • Create Header & Footer [done]
+• Create AccountView [done]
 
+• GET Job's company [to do]
 • CREATE AdminView [to do]
     - get users
     - delete user
     * crud company
-• Create AccountView [doing]
-    - get users, 
-    * get company if recruiter
-• Create Application (front & back) [doing]
+• Create Application (front & back) [to do]
 • Create SavedJobs [todo]
 
 
