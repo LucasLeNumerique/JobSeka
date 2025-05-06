@@ -9,5 +9,9 @@ namespace JobSeeker_server.Models
 
         public int JobId { get; set; }
         public Job Job { get; set; } = null!;
+
+        public string? Message { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
+
 }

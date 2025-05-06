@@ -5,6 +5,8 @@ import HomeView from "./views/HomeView"
 import JobView from "./views/JobView"
 import RegisterView from "./views/Auth/RegisterView"
 import LoginView from "./views/Auth/LoginView"
+import CompaniesView from "./views/CompaniesView"
+import CompanyView from "./views/CompanyView"
 import AccountView from "./views/AccountView"
 import AdminView from "./views/Admin/AdminView"
 import ApplicationView from "./views/Candidate/ApplicationView"
@@ -20,6 +22,8 @@ const App = () => {
           <Route element={<HomeLayout />}>
             <Route index element={<HomeView />} />
             <Route path="jobs/:id" element={<JobView />} />
+            <Route path="societes" element={<CompaniesView />} />
+            <Route path="societes/:id" element={<CompanyView />} />
             <Route path="creation-de-compte" element={<RegisterView />} />
             <Route path="connexion" element={<LoginView />} />
             <Route path="mon-compte" element={<ProtectedRoute><AccountView /></ProtectedRoute>} />

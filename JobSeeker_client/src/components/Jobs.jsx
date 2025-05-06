@@ -7,17 +7,34 @@ const Jobs = ({ setSelectedJob }) => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('https://localhost:7103/api/jobs')
-        .then(response => response.json())
-        .then(data => {
-            setJobs(data)
-            setLoading(false)
-        })
-        .catch(error => {
-            console.error("Erreur de chargement", error)
-            setLoading(false)
-        })
-    }, [])
+        const fetchData = async () => {
+            try {
+                const jobsResponse = await fetch("https://localhost:7103/api/jobs");
+                const companiesResponse = await fetch("https://localhost:7103/api/company");
+        
+                const jobsData = await jobsResponse.json();
+                const companiesData = await companiesResponse.json();
+        
+                const jobsWithCompanyNames = jobsData.map(job => {
+                    const company = companiesData.find(c => c.id === job.companyId);
+                    return {
+                        ...job,
+                        company: {
+                            name: company?.name || "Société inconnue"
+                        }
+                    };
+                });
+        
+                setJobs(jobsWithCompanyNames);
+                setLoading(false);
+            } catch (err) {
+                console.error("Erreur de chargement", err);
+                setLoading(false);
+            }
+        };
+      
+        fetchData();
+      }, []);
 
     if (loading) {
         return (
@@ -54,7 +71,15 @@ const Jobs = ({ setSelectedJob }) => {
                             </div>
                         </Link>
                         <h3 className="w-full sm:max-w-2/3">{job.title}</h3>
-                        <p className="italic font-bold">{job.company}</p>
+                        <div className="flex flex-wrap justify-between items-center gap-x-5">
+                            <span className="italic">{job.company.name}</span>
+                            <div className="flex items-center gap-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
+                                    <path fillRule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clipRule="evenodd" />
+                                </svg>
+                                {job.location}
+                            </div>
+                        </div>
                         {job.salary ? <p className="text-base">Salaire annuel : {formatSalary(job.salary)} €</p> : <p>Salaire non défini</p>}
                         <p>Publiée le {formatDate(job.postedDate)}</p>
                         <Link 
