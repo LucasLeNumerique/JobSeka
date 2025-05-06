@@ -2,7 +2,7 @@ import { Link } from "react-router"
 
 const SideMenu = () => {
     return (
-        <div className="z-10 hidden lg:block absolute top-1/2 left-0 w-40 flex flex-col transition duration-350 ease-in-out opacity-50 -translate-x-3/4 hover:opacity-100 hover:translate-x-0 font-medium bg-linear-to-r from-gray-600 to-gray-900 border border-blue-400 rounded-r-xl shadow-xl">
+        <div className="SideMenu z-10 hidden lg:block absolute top-1/2 left-0 w-40 flex flex-col transition duration-350 ease-in-out opacity-50 -translate-x-3/4 hover:opacity-100 hover:translate-x-0 font-medium bg-linear-to-r from-gray-600 to-gray-900 border border-blue-400 rounded-r-xl shadow-xl">
             <Link
                 className="block p-2 flex justify-between items-center text-blue-400 hover:text-white" 
                 to="societes">
