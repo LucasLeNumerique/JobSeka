@@ -39,7 +39,7 @@ const Jobs = ({ setSelectedJob }) => {
     if (loading) {
         return (
             <div className="relative w-full h-full">
-                <p className="absolute top-1/2 -translate-y-1/2 text-center italic text-2xl font-medium">Les opportunités sont en train de charger...</p>
+                <p className="absolute top-1/2 -translate-y-1/2 hidden lg:block text-center italic text-2xl font-medium">Les opportunités sont en train de charger...</p>
             </div>
         )
     }
@@ -49,7 +49,7 @@ const Jobs = ({ setSelectedJob }) => {
     }
 
     return (
-        <div className="lg:overflow-y-auto lg:p-4 flex flex-col gap-y-4 rounded-xl">
+        <div className="lg:overflow-y-auto lg:p-4 flex sm:grid grid-cols-2 lg:flex flex-col gap-4 lg:gap-x-0 lg:gap-y-4 rounded-xl">
             {jobs.length === 0 ? (
                 <p className="absolute top-1/2 -translate-y-1/2 text-center italic">Il n'y a actuellement pas d'offre à découvrir.</p>
             ) : (
@@ -57,21 +57,21 @@ const Jobs = ({ setSelectedJob }) => {
                     <article 
                         key={job.id} 
                         onClick={() => handleJobClick(job)}
-                        className="relative cursor-pointer p-2 lg:p-4 flex flex-col gap-2 border border-gray-600 hover:border-cyan-400 shadow-xl hover:shadow-cyan-600/50 rounded-xl"
+                        className="h-fit relative cursor-pointer py-3 px-2 lg:py-4 flex flex-col gap-y-2 border border-gray-600 hover:border-cyan-400 lg:active:outline-2 lg:active:outline-offset-2 lg:active:outline-cyan-400 shadow-xl hover:shadow-cyan-600/50 rounded-xl"
                     >
                         <Link 
                             to={`/jobs/${job.id}`}
-                            className="hidden sm:block absolute pt-3 lg:pt-5 top-0 right-3 lg:right-5"
+                            className="hidden sm:block absolute pt-2 lg:pt-3 top-0 right-2 lg:right-3"
                         >
                             <div className="px-3 h-8 flex justify-center items-center gap-x-1 text-white bg-blue-500 transition hover:bg-cyan-400 rounded-full shadow-md shadow-blue-900 hover:shadow-cyan-600">
-                                <p className="font-medium">Détails</p>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                <p className="text-sm font-medium">Détails</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4">
                                     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clipRule="evenodd" />
                                 </svg>
                             </div>
                         </Link>
-                        <h3 className="w-full sm:max-w-2/3">{job.title}</h3>
-                        <div className="flex flex-wrap justify-between items-center gap-x-5">
+                        <h3 className="w-full leading-5 sm:max-w-2/3">{job.title}</h3>
+                        <div className="sm:mt-2 flex flex-wrap justify-between items-center gap-x-5">
                             <span className="italic">{job.company.name}</span>
                             <div className="flex items-center gap-x-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">

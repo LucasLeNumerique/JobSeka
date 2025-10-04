@@ -68,7 +68,7 @@ const Header = () => {
                     <div className="col-start-6 col-end-10 font-medium">
                         {user?.role === "Candidate" && 
                             <Link 
-                                to="/publier"
+                                to="/recherche-de-postes"
                                 onClick={handleNavClick}
                                 className="block mx-auto w-[200px] lg:w-fit py-2 px-4 text-center text-cyan-400 bg-linear-to-r from-white to-cyan-50 border border-cyan-400 rounded-xl"
                             >

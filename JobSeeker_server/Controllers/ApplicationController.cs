@@ -70,16 +70,50 @@ namespace JobSeeker_server.Controllers
             {
                 a.Id,
                 a.JobId,
+                a.Message,
+                a.CreatedAt,
                 Job = new
                 {
                     a.Job.Id,
                     a.Job.Title,
                     Company = a.Job.Company == null ? null : new { a.Job.Company.Name }
                 },
-                a.CreatedAt
             });
 
             return Ok(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetApplicationById(int id)
+        {
+            var application = await _context.Applications
+                .Include(a => a.Job)
+                    .ThenInclude(j => j.Company)
+                .Include(a => a.Candidate)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (application == null)
+                return NotFound();
+
+            return Ok(new
+            {
+                application.Id,
+                application.Message,
+                application.CreatedAt,
+                Job = new
+                {
+                    application.Job.Id,
+                    application.Job.Title,
+                    application.Job.Description,
+                    application.Job.Salary,
+                    Company = application.Job.Company == null ? null : new { application.Job.Company.Name }
+                },
+                Candidate = new
+                {
+                    application.Candidate.Id,
+                    application.Candidate.Email
+                }
+            });
         }
     }
 }

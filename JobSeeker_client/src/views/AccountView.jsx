@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../components/Auth/useAuth";
 import { Link } from "react-router";
+import { formatSalary, formatDate } from "../utils/formatters"
 
 const AccountView = () => {
     const { user, logout } = useAuth();
@@ -61,15 +62,20 @@ const AccountView = () => {
                 <p className="italic">Chargement en cours...</p>
             ) : user.role === "Candidate" ? (
                 <div>
-                    <h2 className="text-xl font-semibold mt-4">Mes candidatures pour ces postes :</h2>
+                    <h2 className="text-xl font-semibold my-4">Mes candidatures pour ces postes :</h2>
                     {applications.length === 0 ? (
                         <p>Aucune candidature envoyée.</p>
                     ) : (
-                        <ul className="list-disc pl-6">
+                        <ul className="flex flex-col sm:flex-row gap-4">
                             {applications.map(app => (
-                                <li key={app.id}>
-                                    <Link to={`/jobs/${app.job.id}`} className="text-blue-600 hover:underline">
-                                        {app.job.title} - {app.job.company?.name || "Entreprise inconnue"}
+                                <li key={app.id} className="cursor-pointer border border-gray-600 hover:border-cyan-400 rounded-lg shadow-sm">
+                                    <Link to={`/applications/${app.id}`} className="block p-4">
+                                        <h3 className="font-semibold text-lg">
+                                                {app.job.title} - {app.job.company?.name || "Entreprise inconnue"}
+                                        </h3>
+                                        <p className="text-sm text-gray-600">
+                                            Candidature envoyée le {formatDate(app.createdAt)}
+                                        </p>
                                     </Link>
                                 </li>
                             ))}
@@ -78,7 +84,7 @@ const AccountView = () => {
                 </div>
             ) : user.role === "Recruiter" ? (
                 <div>
-                    <h2 className="text-xl font-semibold mt-4">Mes offres publiées</h2>
+                    <h2 className="text-xl font-semibold my-4">Mes offres publiées</h2>
                     {jobs.length === 0 ? (
                         <p>Aucune offre publiée.</p>
                     ) : (

@@ -72,8 +72,8 @@ const CreateJobView = () => {
 
             {message && <p className="text-gray-400">{message}</p>}
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-y-5">
-                <div className="splitRow flex flex-col md:grid md:grid-cols-12 gap-5">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-y-3">
+                <div className="splitRow flex flex-col md:grid md:grid-cols-12 gap-3">
                     <div className="field col-span-7 flex flex-col gap-2">
                         <label className="text-xl font-medium">Titre du poste</label>
                         <input
@@ -99,7 +99,7 @@ const CreateJobView = () => {
                     </div>
                 </div>
 
-                <div className="splitRow flex flex-col md:grid md:grid-cols-12 gap-5">
+                <div className="splitRow flex flex-col md:grid md:grid-cols-12 gap-3">
                     <div className="field col-span-8 flex flex-col gap-2">
                         <label className="text-xl font-medium">Localisation</label>
                         <input

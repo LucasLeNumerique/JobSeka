@@ -1,151 +1,77 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../components/Auth/useAuth";
-import { useNavigate, useParams } from "react-router";
+import { useParams, Link } from "react-router";
+import { formatDate, formatSalary } from "../../utils/formatters";
 
 const ApplicationView = () => {
-    const { user, token } = useAuth();
-    const { id } = useParams(); // jobId
-    const navigate = useNavigate();
+  const { id } = useParams();
+  const [application, setApplication] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const [job, setJob] = useState(null);
-    const [company, setCompany] = useState(null);
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(true);
-    const [checking, setChecking] = useState(true);
-
-    const [message, setMessage] = useState("");
-    const [hasApplied, setHasApplied] = useState(false);
-    const [submitting, setSubmitting] = useState(false);
-    const [success, setSuccess] = useState("");
-
-    useEffect(() => {
-        if (!user || user.role !== "Candidate") {
-            navigate("/");
-            return;
-        }
-
-        const fetchJobAndCompany = async () => {
-            try {
-                const jobRes = await fetch(`https://localhost:7103/api/jobs/${id}`);
-                if (!jobRes.ok) throw new Error("Erreur lors de la récupération de l'offre.");
-                const jobData = await jobRes.json();
-                setJob(jobData);
-
-                if (jobData.companyId) {
-                    const companyRes = await fetch(`https://localhost:7103/api/company/${jobData.companyId}`);
-                    if (companyRes.ok) {
-                        const companyData = await companyRes.json();
-                        setCompany(companyData);
-                    }
-                }
-            } catch (err) {
-                setError("Erreur lors du chargement de l'offre.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const checkIfAlreadyApplied = async () => {
-            try {
-                const res = await fetch(
-                    `https://localhost:7103/api/applications/has-applied?candidateId=${user.userId}&jobId=${id}`,
-                    {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }
-                );
-                if (!res.ok) throw new Error("Erreur de vérification");
-                const data = await res.json();
-                setHasApplied(data.hasApplied);
-            } catch {
-                setError("Impossible de vérifier votre statut de candidature.");
-            } finally {
-                setChecking(false);
-            }
-        };
-
-        fetchJobAndCompany();
-        checkIfAlreadyApplied();
-    }, [id, user, token, navigate]);
-
-    const handleSubmit = async () => {
-        setSubmitting(true);
-        setError("");
-        const payload = {
-            candidateId: user.userId,
-            jobId: parseInt(id),
-            message,
-        };
-
-        try {
-            const res = await fetch("https://localhost:7103/api/applications", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(payload),
-            });
-
-            if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(errorText);
-            }
-
-            setSuccess("Votre candidature a été envoyée avec succès !");
-            setTimeout(() => navigate("/"), 2000);
-        } catch (err) {
-            setError(err.message || "Erreur lors de la soumission.");
-        } finally {
-            setSubmitting(false);
-        }
+  useEffect(() => {
+    const fetchApplication = async () => {
+      try {
+        const res = await fetch(`https://localhost:7103/api/applications/${id}`);
+        if (!res.ok) throw new Error("Application introuvable");
+        const data = await res.json();
+        setApplication(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    return (
-        <div className="p-4">
-            {loading || checking ? (
-                <p className="text-center italic">Chargement...</p>
-            ) : error ? (
-                <p className="text-center text-red-500">{error}</p>
-            ) : hasApplied ? (
-                <p className="text-center text-red-600 font-semibold text-lg">
-                    Vous avez déjà postulé à cette offre.
-                </p>
-            ) : job ? (
-                <div>
-                    <div className="flex flex-col gap-y-3">
-                        <h1 className="text-2xl font-bold">Candidature pour le poste : {job.title}</h1>
-                        <p className="italic text-gray-600">Entreprise : {company?.name || "Inconnue"}</p>
-                        <p>Location : {job.location}</p>
+    fetchApplication();
+  }, [id]);
+
+  if (loading) return <p>Chargement...</p>;
+  if (error) return <p className="text-red-500">Erreur : {error}</p>;
+  if (!application) return <p>Aucune donnée de candidature.</p>;
+
+  const { job, candidate, message, createdAt } = application;
+
+  return (
+        <main className="h-full relative flex flex-col gap-y-5">
+            <div className="flex justify-between items-center">
+                <Link to="/mon-compte" className="flex justify-center items-center gap-x-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                        <path fillRule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />
+                    </svg>
+                    <span className="hidden sm:inline">Retour au profil</span> 
+                </Link>
+                <h2 className="text-sm text-gray-600">Envoyée le : {formatDate(createdAt)}</h2>
+            </div>
+
+            <h1 className="text-2xl font-bold">{job.title}</h1>
+            <h2 className="text-gray-500">Entreprise : {job.company?.name || "Inconnue"}</h2>
+
+            <div className="flex flex-col lg:grid lg:grid-cols-5 gap-y-8 gap-x-5">
+                <div className="flex flex-col gap-y-5 col-span-3">
+                    <div>
+                        <h3 className="font-semibold">Email du candidat</h3>
+                        <p className="text-blue-700">{candidate.email}</p>
                     </div>
-
-                    <div className="mt-4">
-                        <label className="block font-medium mb-1">Lettre de motivation</label>
-                        <textarea
-                            value={message}
-                            onChange={e => setMessage(e.target.value)}
-                            className="w-full p-2 border rounded"
-                            rows={6}
-                            placeholder="Expliquez pourquoi vous êtes intéressé(e) par ce poste..."
-                        ></textarea>
+                    <div>
+                        <h3 className="font-semibold">Message du candidat</h3>
+                        <p>{message || "Aucun message"}</p>
                     </div>
-
-                    <button
-                        onClick={handleSubmit}
-                        disabled={submitting}
-                        className="cursor-pointer block w-fit p-2 md:p-3 font-bold text-white bg-blue-500 transition hover:bg-cyan-400 rounded-lg shadow-md shadow-blue-900 hover:shadow-cyan-600 mt-4"
-                    >
-                        {submitting ? "Envoi en cours..." : "Envoyer ma candidature"}
-                    </button>
-
-                    {success && (
-                        <p className="mt-4 text-green-600 font-medium text-center">{success}</p>
-                    )}
                 </div>
-            ) : (
-                <p className="text-center text-gray-500">Aucun détail de l'offre trouvé.</p>
-            )}
-        </div>
-    );
+                <hr className="block sm:hidden" />
+                <div className="sm:mx-auto sm:p-3 flex flex-col gap-y-3 col-span-2 max-w-[425px] sm:border sm:rounded-lg">
+                    <h3>Rappel du poste</h3>
+                    <div>
+                        <h4 className="font-semibold">Description du poste</h4>
+                        <p>{job.description || "Pas de description"}</p>
+                    </div>
+                    <div>
+                        <h4 className="font-semibold">Salaire</h4>
+                        <p>{job.salary ? `${formatSalary(job.salary)} € / an` : "Non précisé"}</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+  );
 };
 
 export default ApplicationView;
