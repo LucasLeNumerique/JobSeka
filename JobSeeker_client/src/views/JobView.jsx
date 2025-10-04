@@ -5,20 +5,30 @@ import { formatSalary, formatDate } from "../utils/formatters"
 const JobView = () => {
     const { id } = useParams()
     const [job, setJob] = useState(null)
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [company, setCompany] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
-        fetch(`https://localhost:7103/api/jobs/${id}`)
-            .then((response) => response.json())
-            .then(data => {
-                setJob(data)
+        const fetchJobAndCompany = async () => {
+            try {
+                const jobResponse = await fetch(`https://localhost:7103/api/jobs/${id}`)
+                const jobData = await jobResponse.json()
+                setJob(jobData)
+
+                if (jobData.companyId) {
+                    const companyResponse = await fetch(`https://localhost:7103/api/company/${jobData.companyId}`)
+                    const companyData = await companyResponse.json()
+                    setCompany(companyData)
+                }
+            } catch (err) {
+                setError(err.message)
+            } finally {
                 setLoading(false)
-            })
-            .catch((error) => {
-                setError(error.message)
-                setLoading(false)
-            })
+            }
+        }
+
+        fetchJobAndCompany()
     }, [id])
 
     if (loading) {
@@ -26,7 +36,7 @@ const JobView = () => {
             <main className="relative h-full">
                 <p className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 italic text-2xl font-medium">Chargement de l'offre...</p>
             </main>
-        );
+        )
     }
 
     if (error) {
@@ -35,14 +45,13 @@ const JobView = () => {
                 <p className="text-center italic">
                     Une erreur est survenue lors du chargement de l'offre de poste.
                     Erreur : {error}
-                </p>;  
+                </p>
             </main>
-        ) 
+        )
     }
 
-    // If job is still null, return nothing (fallback)
     if (!job) {
-        return <p className="text-center text-gray-500">Aucune offre trouvée.</p>;
+        return <p className="text-center text-gray-500">Aucune offre trouvée.</p>
     }
 
     return (
@@ -58,7 +67,7 @@ const JobView = () => {
                 </div>
                 <h2>{formatDate(job.postedDate)}</h2>
             </div>
-            <h2 className="text-gray-400">Société : {job.company}</h2>
+            <h2 className="text-gray-400">Société : {company?.name || "Inconnue"}</h2>
             <p>{job.description || "Pas de description disponible"}</p>
             <p>{job.salary ? `Salaire annuel : ${formatSalary(job.salary)} €` : "Salaire annuel : non défini"}</p>
         </main>

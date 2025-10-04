@@ -16,7 +16,7 @@ const SelectedJob = ({ selectedJob }) => {
     return (
         <div className="flex flex-col gap-y-2">
             <h2 className="text-2xl font-bold">{selectedJob.title}</h2>
-            <p className="italic">{selectedJob.company}</p>
+            <p className="italic">{selectedJob.company.name}</p>
             <p>{selectedJob.salary ? `${formatSalary(selectedJob.salary)} €` : "Salaire non défini"}</p>
             <p className="">{selectedJob.description || "Pas de description disponible"}</p>
             <p>{formatDate(selectedJob.postedDate)}</p>

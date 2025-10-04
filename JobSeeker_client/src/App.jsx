@@ -5,12 +5,17 @@ import HomeView from "./views/HomeView"
 import JobView from "./views/JobView"
 import RegisterView from "./views/Auth/RegisterView"
 import LoginView from "./views/Auth/LoginView"
+import CompaniesView from "./views/CompaniesView"
+import CompanyView from "./views/CompanyView"
 import AccountView from "./views/AccountView"
 import AdminView from "./views/Admin/AdminView"
+import ApplicationCreateView from "./views/Candidate/ApplicationCreateView"
+import SearchJobsView from "./views/Candidate/SearchJobsView"
 import ApplicationView from "./views/Candidate/ApplicationView"
 import CreateJobView from "./views/Recruiter/CreateJobView"
 
 import ProtectedRoute from "./components/ProtectedRoute"
+import SearchLayout from "./layouts/SearchLayout"
 
 const App = () => {
   return (
@@ -20,12 +25,19 @@ const App = () => {
           <Route element={<HomeLayout />}>
             <Route index element={<HomeView />} />
             <Route path="jobs/:id" element={<JobView />} />
+            <Route path="societes" element={<CompaniesView />} />
+            <Route path="societes/:id" element={<CompanyView />} />
             <Route path="creation-de-compte" element={<RegisterView />} />
             <Route path="connexion" element={<LoginView />} />
             <Route path="mon-compte" element={<ProtectedRoute><AccountView /></ProtectedRoute>} />
             <Route path="admin" element={<ProtectedRoute><AdminView /></ProtectedRoute>} />
             <Route path="publier-une-offre" element={<ProtectedRoute><CreateJobView /></ProtectedRoute>} />
-            <Route path="candidature/:id" element={<ProtectedRoute><ApplicationView /></ProtectedRoute>} />
+            <Route path="candidature/:id" element={<ProtectedRoute><ApplicationCreateView /></ProtectedRoute>} />
+            <Route path="/applications/:id" element={<ProtectedRoute><ApplicationView /></ProtectedRoute>} />
+          </Route>
+
+          <Route element={<SearchLayout />}>
+            <Route path="recherche-de-postes" element={<ProtectedRoute><SearchJobsView /></ProtectedRoute>} />
           </Route>
         </Routes>
       </BrowserRouter>

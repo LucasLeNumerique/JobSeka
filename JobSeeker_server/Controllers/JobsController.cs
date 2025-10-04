@@ -21,7 +21,9 @@ namespace JobSeeker_server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Job>>> GetJobs()
         {
-            var jobs = await _context.Jobs.ToListAsync();
+            var jobs = await _context.Jobs
+                .OrderByDescending(j => j.PostedDate)
+                .ToListAsync();
             return Ok(jobs);
         }
 
@@ -37,6 +39,17 @@ namespace JobSeeker_server.Controllers
             }
 
             return job;
+        }
+
+        [HttpGet("recruiter/{recruiterId}")]
+        public async Task<ActionResult<IEnumerable<Job>>> GetJobsByRecruiter(int recruiterId)
+        {
+            var jobs = await _context.Jobs
+                .Where(j => j.RecruiterId == recruiterId)
+                .OrderByDescending(j => j.PostedDate)
+                .ToListAsync();
+
+            return Ok(jobs);
         }
 
         [HttpPost]
