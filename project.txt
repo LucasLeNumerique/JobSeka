@@ -1,0 +1,46 @@
+*FOND DU SITE
+gradient from-white to-blue-50
+
+*GLOBAL TEXT
+text-gray-900
+
+*TEXTS CYAN
+text-cyan-400
+
+*TEXTS BLUE
+text-blue-400
+
+*NAV LINKS
+gradient from-white to-blue-50 border border-x-blue-400 rounded-xl
+
+*BUTTONS
+block w-fit p-2 md:p-3 font-bold text-white bg-blue-500 hover:bg-cyan-400 rounded-lg shadow-md shadow-blue-900 hover:shadow-cyan-600
+
+*BORDERS
+text-gray-600
+
+_____________________________________________________________________________________________________________________________________
+
+• CREATE RegisterView [done]
+• CREATE LoginView [done]
+• CREATE CreateJob [done] 
+• CREATE Header & Footer [done]
+• CREATE Job [done]
+• CREATE CompaniesView [done]
+
+• CREATE AccountView [done]
+    - add candidate's jobs applied, recruiter's posted jobs 
+
+• CREATE CompanyView [done]
+    - add company's jobs
+
+• CREATE AdminView [to do]
+    - get users
+    - delete user
+    * crud company
+• POST Application (front & back) [done]
+• Create SavedJobs [todo]
+• Create MyApplications [todo]
+
+
+
