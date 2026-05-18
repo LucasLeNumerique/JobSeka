@@ -1,0 +1,286 @@
+/* =============================================================================
+   JOBSEKA — DESIGN SYSTEM (Tailwind v4 uniquement)
+
+   Ce fichier centralise les tokens et les classes réutilisables.
+   Importé via styles.css — aucune dépendance supplémentaire.
+
+   ─── UTILISATION RAPIDE ───────────────────────────────────────────────────
+
+   Typographie     heading-1 … heading-6 | text-body | text-subtle | text-accent-*
+   Boutons         btn + btn-primary | btn-secondary | btn-ghost | btn-danger
+   Navigation      nav-link (+ nav-link-cyan pour variante candidat)
+   Formulaires     label | input (+ input-error si invalide)
+   Conteneurs      page | container-page | container-form | card (+ card-elevated)
+   Espacements     section | stack-sm | stack-md | stack-lg | gap-page
+   Bordures        border-default | border-accent
+
+   Les balises h1–h6 héritent automatiquement des styles (couche base).
+   ============================================================================= */
+
+@theme {
+  /* ── Couleurs de marque ───────────────────────────────────────────────── */
+  --color-brand-blue: #3b82f6;
+  --color-brand-blue-dark: #1d4ed8;
+  --color-brand-cyan: #22d3ee;
+  --color-brand-cyan-light: #ecfeff;
+
+  /* ── Surfaces & texte ─────────────────────────────────────────────────── */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f9fafb;
+  --color-ink: #111827;
+  --color-muted: #9ca3af;
+  --color-ink-soft: #4b5563;
+  --color-border: #93c5fd;
+  --color-border-focus: #3b82f6;
+
+  /* ── États ──────────────────────────────────────────────────────────────── */
+  --color-error: #ef4444;
+  --color-success: #22c55e;
+
+  /* ── Ombres ───────────────────────────────────────────────────────────── */
+  --shadow-btn: 0 4px 6px -1px rgb(30 58 138 / 0.4);
+  --shadow-btn-hover: 0 4px 6px -1px rgb(8 145 178 / 0.5);
+  --shadow-card: 0 20px 25px -5px rgb(59 130 246 / 0.5);
+
+  /* ── Rayons ─────────────────────────────────────────────────────────────── */
+  --radius-btn: 0.5rem;
+  --radius-input: 0.75rem;
+  --radius-card: 0.75rem;
+  --radius-nav: 0.75rem;
+  /* Alias utilitaires : rounded-btn, rounded-input, rounded-card, rounded-nav */
+
+  /* ── Espacements (échelle interne) ──────────────────────────────────────── */
+  --spacing-page-x: 1.25rem;
+  --spacing-page-y: 2rem;
+  --spacing-section: 3.75rem;
+  --spacing-stack-sm: 0.5rem;
+  --spacing-stack-md: 1.25rem;
+  --spacing-stack-lg: 3.75rem;
+}
+
+/* ─── BASE ───────────────────────────────────────────────────────────────── */
+
+@layer base {
+  h1 {
+    @apply text-2xl md:text-3xl font-bold leading-tight text-ink;
+  }
+
+  h2 {
+    @apply text-xl md:text-[1.75rem] font-bold leading-tight text-ink;
+  }
+
+  h3 {
+    @apply text-lg md:text-2xl font-medium text-ink;
+  }
+
+  h4 {
+    @apply text-base md:text-lg font-medium text-ink;
+  }
+
+  h5 {
+    @apply text-sm md:text-base font-medium text-ink;
+  }
+
+  h6 {
+    @apply text-xs md:text-sm font-medium uppercase tracking-wide text-muted;
+  }
+}
+
+/* ─── COMPOSANTS ─────────────────────────────────────────────────────────── */
+
+@layer components {
+  /* ── Page & layout ───────────────────────────────────────────────────── */
+
+  .page {
+    @apply min-h-screen bg-linear-to-r from-white to-blue-50 text-ink;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 py-8;
+  }
+
+  .container-form {
+    @apply mx-auto w-full max-w-[750px] py-20 flex flex-col items-center text-center;
+  }
+
+  .section {
+    @apply py-[var(--spacing-section)];
+  }
+
+  .gap-page {
+    @apply gap-y-[var(--spacing-stack-lg)];
+  }
+
+  .stack-sm {
+    @apply flex flex-col gap-[var(--spacing-stack-sm)];
+  }
+
+  .stack-md {
+    @apply flex flex-col gap-[var(--spacing-stack-md)];
+  }
+
+  .stack-lg {
+    @apply flex flex-col gap-[var(--spacing-stack-lg)];
+  }
+
+  /* ── Typographie (classes explicites) ──────────────────────────────────── */
+
+  .heading-1 {
+    @apply text-2xl md:text-3xl font-bold leading-tight text-ink;
+  }
+
+  .heading-2 {
+    @apply text-xl md:text-[1.75rem] font-bold leading-tight text-ink;
+  }
+
+  .heading-3 {
+    @apply text-lg md:text-2xl font-medium text-ink;
+  }
+
+  .heading-4 {
+    @apply text-base md:text-lg font-medium text-ink;
+  }
+
+  .heading-5 {
+    @apply text-sm md:text-base font-medium text-ink;
+  }
+
+  .heading-6 {
+    @apply text-xs md:text-sm font-medium uppercase tracking-wide text-muted;
+  }
+
+  .text-body {
+    @apply text-base text-ink;
+  }
+
+  .text-subtle {
+    @apply text-gray-400;
+  }
+
+  .text-accent-blue {
+    @apply text-blue-400;
+  }
+
+  .text-accent-cyan {
+    @apply text-cyan-400;
+  }
+
+  .text-error {
+    @apply text-red-500;
+  }
+
+  .text-success {
+    @apply text-green-500;
+  }
+
+  .logo-brand {
+    @apply text-2xl font-bold text-blue-500;
+  }
+
+  .logo-brand-accent {
+    @apply text-cyan-400;
+  }
+
+  /* ── Boutons ───────────────────────────────────────────────────────────── */
+
+  .btn {
+    @apply inline-flex w-fit cursor-pointer items-center justify-center
+      px-4 py-2 md:py-3 font-bold rounded-btn
+      transition-colors duration-200
+      disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  /* Combiner : className="btn btn-primary" */
+  .btn-primary {
+    @apply text-white bg-blue-500
+      hover:bg-cyan-400
+      shadow-md shadow-blue-900 hover:shadow-cyan-600;
+  }
+
+  .btn-secondary {
+    @apply text-blue-400
+      bg-linear-to-r from-white to-blue-50
+      border border-blue-400
+      hover:text-cyan-400 hover:border-cyan-400;
+  }
+
+  .btn-ghost {
+    @apply text-blue-400 bg-transparent hover:text-cyan-400;
+  }
+
+  .btn-danger {
+    @apply text-white bg-red-500 hover:bg-red-600 shadow-md shadow-red-900/30;
+  }
+
+  .btn-block {
+    @apply w-full max-w-[350px] mx-auto;
+  }
+
+  /* ── Navigation ────────────────────────────────────────────────────────── */
+
+  .nav-link {
+    @apply block w-fit py-2 px-4 text-center font-medium text-blue-400
+      bg-linear-to-r from-white to-blue-50
+      border border-blue-400 rounded-nav
+      transition-colors hover:text-cyan-400 hover:border-cyan-400;
+  }
+
+  /* Combiner : className="nav-link nav-link-cyan" */
+  .nav-link-cyan {
+    @apply text-cyan-400 border-cyan-400
+      bg-linear-to-r from-white to-cyan-50
+      hover:text-blue-400 hover:border-blue-400;
+  }
+
+  /* ── Formulaires ───────────────────────────────────────────────────────── */
+
+  .label {
+    @apply text-xl font-medium text-ink;
+  }
+
+  .input {
+    @apply py-2 px-4 w-full text-center
+      border border-blue-300 rounded-input
+      focus:outline-none focus:border-brand-blue;
+  }
+
+  /* Combiner : className="input input-error" */
+  .input-error {
+    @apply border-red-400 focus:border-red-500;
+  }
+
+  /* ── Cartes & panneaux ─────────────────────────────────────────────────── */
+
+  .card {
+    @apply bg-surface rounded-card p-4 md:p-6;
+  }
+
+  /* Combiner : className="card card-elevated" */
+  .card-elevated {
+    @apply shadow-xl shadow-blue-400/50;
+  }
+
+  /* ── Bordures ──────────────────────────────────────────────────────────── */
+
+  .border-default {
+    @apply border border-blue-300 rounded-input;
+  }
+
+  .border-accent {
+    @apply border border-blue-400 rounded-nav;
+  }
+
+  .border-muted {
+    @apply border border-gray-300 rounded-input text-ink-soft;
+  }
+
+  /* ── Listes & liens utilitaires ────────────────────────────────────────── */
+
+  .link {
+    @apply text-blue-400 underline-offset-2 hover:text-cyan-400 hover:underline;
+  }
+
+  .divider {
+    @apply border-t border-blue-200 my-4;
+  }
+}

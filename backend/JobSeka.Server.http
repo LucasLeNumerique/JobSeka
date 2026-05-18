@@ -1,0 +1,3 @@
+@JobSeka_Server_HostAddress = http://localhost:5293
+
+GET {{JobSeka_Server_HostAddress}}/weatherforecast/
